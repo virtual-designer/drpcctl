@@ -21,6 +21,9 @@ jobs:
 
       - name: Setup Flutter SDK
         uses: flutter-actions/setup-flutter@v2
+        with:
+          channel: stable
+          version: 3.2.2
 
       - name: Install dependencies
         run: flutter pub get
