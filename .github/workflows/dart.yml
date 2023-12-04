@@ -25,6 +25,9 @@ jobs:
           flutter-version: '3.16.2'
           channel: 'stable'
 
+      - name: Install Ninja-build
+        run: sudo apt install ninja-build
+
       - name: Install dependencies
         run: flutter pub get
 
