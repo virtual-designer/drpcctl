@@ -1,0 +1,7 @@
+[*]
+indent_size = 4
+indent_stle = space
+end_of_line = lf
+
+[*.dart]
+indent_size = 2
