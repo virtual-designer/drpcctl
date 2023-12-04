@@ -26,7 +26,7 @@ jobs:
           channel: 'stable'
 
       - name: Install Ninja-build and other tools
-        run: sudo apt install ninja-build bash curl file git mkdir unzip xz-utils zip; 
+        run: sudo apt install ninja-build bash curl file git unzip xz-utils zip; 
 
       - name: Install dependencies
         run: flutter pub get
