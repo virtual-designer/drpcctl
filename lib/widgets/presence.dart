@@ -88,7 +88,6 @@ class _PresenceState extends State<Presence> {
     smallAssetController.dispose();
     largeAssetTextController.dispose();
     smallAssetTextController.dispose();
-    presenceController.shutDown();
 
     super.dispose();
   }
