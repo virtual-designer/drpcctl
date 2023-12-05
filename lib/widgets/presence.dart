@@ -15,7 +15,6 @@ class _PresenceState extends State<Presence> {
   bool enabled = false;
   bool showElapsedTime = false;
   TimeOfDay? time;
-  DateTime? date;
 
   final clientIdController = TextEditingController();
   final stateController = TextEditingController();
@@ -60,7 +59,10 @@ class _PresenceState extends State<Presence> {
       presenceController.start();
     }
 
-    final timestamp = date == null && time == null ? null : ((date?.millisecondsSinceEpoch ?? 0) + ((time?.hour ?? 0) * 60 * 60 * 1000) + ((time?.minute ?? 0) * 60 * 1000));
+    final currentTime = TimeOfDay.now();
+    final timestamp = !showElapsedTime ? null : (
+        time == null ? DateTime.timestamp().millisecondsSinceEpoch : (DateTime.timestamp().millisecondsSinceEpoch - (((currentTime.hour - (time?.hour ?? 0)) * 60 * 60 * 1000) + ((currentTime.minute - (time?.minute ?? 0)) * 60 * 1000)))
+    );
 
     presenceController.updatePresence(
       DiscordPresence(
@@ -222,11 +224,9 @@ class _PresenceState extends State<Presence> {
                             onChanged: (state) {
                               setState(() {
                                 if (state) {
-                                  date ??= DateTime.now();
                                   time ??= TimeOfDay.now();
                                 }
                                 else {
-                                  date = null;
                                   time = null;
                                 }
 
@@ -241,28 +241,12 @@ class _PresenceState extends State<Presence> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         YaruIconButton(
-                          icon: Icon(Icons.date_range, color: showElapsedTime ? null : const Color(0xFF777777)),
+                          icon: Icon(Icons.restore, color: showElapsedTime ? null : const Color(0xFF777777)),
                           onPressed: () async {
-                            if (!showElapsedTime) {
-                              return;
-                            }
-
-                            final date = await showDatePicker(
-                              context: context, 
-                              lastDate: DateTime.now(),
-                              firstDate: DateTime.fromMillisecondsSinceEpoch(0)
-                            );
-
                             setState(() {
-                              this.date = date;
+                              time = null;
                             });
                           }
-                        ),
-                        Text(
-                          DateFormat.yMMMd().format(date ?? DateTime.now()),
-                          style: TextStyle(
-                            color: showElapsedTime ? null : const Color(0xFF777777)
-                          ),
                         ),
                         YaruIconButton(
                           icon: Icon(Icons.timelapse, color: showElapsedTime ? null : const Color(0xFF777777)),
